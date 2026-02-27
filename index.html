@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Suno MV Auto Director</title>
+<style>
+body{font-family:Arial;background:#111;color:white;padding:20px}
+input,select,button{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:none}
+button{background:#00ff88;font-weight:bold}
+</style>
+</head>
+<body>
+
+<h2>🎬 Suno MV Auto Director</h2>
+
+<input id="prompt" placeholder="Enter MV idea">
+<select id="style">
+<option value="cinematic">Cinematic</option>
+<option value="anime">Anime</option>
+<option value="live-action">Live Action</option>
+</select>
+<input id="duration" placeholder="Duration (30s)">
+
+<button onclick="generate()">🚀 Generate</button>
+
+<pre id="result"></pre>
+
+<script>
+async function generate(){
+  const prompt=document.getElementById("prompt").value;
+  const style=document.getElementById("style").value;
+  const duration=document.getElementById("duration").value;
+
+  const res=await fetch("/generate",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({prompt,style,duration})
+  });
+
+  const data=await res.json();
+  document.getElementById("result").textContent=
+    JSON.stringify(data,null,2);
+}
+</script>
+
+</body>
+</html>
