@@ -1,0 +1,12 @@
+{
+  "name": "suno-mv-auto-director",
+  "version": "1.0.0",
+  "description": "AI MV Auto Director",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
