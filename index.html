@@ -1,35 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Suno MV Auto Director</title>
-<style>
-body{font-family:Arial;background:#111;color:white;padding:20px}
-input,select,button{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:none}
-button{background:#00ff88;font-weight:bold}
-</style>
+  <meta charset="UTF-8" />
+  <title>AI MV Auto Director</title>
+  <style>
+    body{
+      font-family:Arial;
+      background:#0f172a;
+      color:white;
+      text-align:center;
+      padding:40px;
+    }
+    input,select{
+      padding:10px;
+      margin:8px;
+      width:250px;
+      border-radius:8px;
+      border:none;
+    }
+    button{
+      padding:12px 20px;
+      border:none;
+      border-radius:8px;
+      background:#00f5a0;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    #result{
+      margin-top:30px;
+      text-align:left;
+      background:#111827;
+      padding:20px;
+      border-radius:10px;
+      white-space:pre-wrap;
+    }
+  </style>
 </head>
 <body>
 
-<h2>🎬 Suno MV Auto Director</h2>
+<h1>🎬 AI MV Auto Director</h1>
 
-<input id="prompt" placeholder="Enter MV idea">
+<input id="prompt" placeholder="Song concept" /><br>
+
 <select id="style">
-<option value="cinematic">Cinematic</option>
-<option value="anime">Anime</option>
-<option value="live-action">Live Action</option>
-</select>
-<input id="duration" placeholder="Duration (30s)">
+  <option>Cinematic</option>
+  <option>Dark Moody</option>
+  <option>Pop Colorful</option>
+</select><br>
 
-<button onclick="generate()">🚀 Generate</button>
+<select id="duration">
+  <option>3 minutes</option>
+  <option>4 minutes</option>
+  <option>5 minutes</option>
+</select><br>
 
-<pre id="result"></pre>
+<button onclick="generate()">Generate</button>
+
+<div id="result"></div>
 
 <script>
 async function generate(){
+
   const prompt=document.getElementById("prompt").value;
   const style=document.getElementById("style").value;
   const duration=document.getElementById("duration").value;
+
+  document.getElementById("result").innerHTML="⏳ Generating storyboard...";
 
   const res=await fetch("/generate",{
     method:"POST",
@@ -38,7 +74,8 @@ async function generate(){
   });
 
   const data=await res.json();
-  document.getElementById("result").textContent=
+
+  document.getElementById("result").innerHTML=
     JSON.stringify(data,null,2);
 }
 </script>
