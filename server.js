@@ -3,34 +3,43 @@ const app = express();
 
 app.use(express.json());
 
-// Root route (เปิดเว็บแล้วไม่ขาว)
 app.get("/", (req, res) => {
-  res.send("🎬 AI MV Auto Director API is running");
+  res.send("🎬 AI MV Director using HuggingFace");
 });
 
-// Generate endpoint
-app.post("/generate", (req, res) => {
-  const { prompt, style, duration } = req.body;
+app.post("/generate", async (req, res) => {
+  try {
+    const { prompt, style, duration } = req.body;
 
-  // จำลอง AI ประมวลผล
-  const response = {
-    status: "success",
-    director: "AI MV Auto Director",
-    input: {
-      prompt,
-      style,
-      duration
-    },
-    storyboard: [
-      { scene: 1, description: "Opening cinematic wide shot" },
-      { scene: 2, description: "Close-up emotional performance" },
-      { scene: 3, description: "Dynamic camera movement transition" },
-      { scene: 4, description: "Final climax slow motion scene" }
-    ],
-    message: "MV Plan Generated Successfully"
-  };
+    const response = await fetch(
+      "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.HF_TOKEN}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          inputs: `
+You are a professional music video director.
+Create 8 cinematic scenes storyboard.
+Prompt: ${prompt}
+Style: ${style}
+Duration: ${duration}
+Return structured JSON.
+`
+        })
+      }
+    );
 
-  res.json(response);
+    const data = await response.json();
+
+    res.json({ result: data });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "HuggingFace AI failed" });
+  }
 });
 
 module.exports = app;
