@@ -1,0 +1,13 @@
+{
+  "name": "ai-mv-auto-director",
+  "version": "1.0.0",
+  "description": "AI MV Auto Director Web App",
+  "main": "server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": "18.x"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
